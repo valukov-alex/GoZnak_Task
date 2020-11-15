@@ -39,7 +39,7 @@ class NoiseClassificationDataset(Dataset):
         path = self.records_list[idx][0]
         label = self.records_list[idx][1]
 
-        mel_spectrogram = pad_mel_spectogram(np.load(path))
+        mel_spectrogram = pad_mel_spectogram(np.load(path)).astype(np.float32)
         mel_spectrogram = torch.from_numpy(mel_spectrogram)
 
         return mel_spectrogram, label

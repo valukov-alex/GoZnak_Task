@@ -34,7 +34,7 @@ class CNN(nn.Module):
         self.block4 = CNNBlock(64, 128, (3, 3))
         self.pool4 = nn.MaxPool2d((2, 2))
 
-        self.ang_pool = nn.AdaptiveAvgPool2d((1, 1))
+        self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
 
         self.flatten = nn.Flatten()
 
@@ -57,6 +57,8 @@ class CNN(nn.Module):
 
         x = self.block4(x)
         x = self.pool4(x)
+
+        x = self.avg_pool(x)
 
         x = self.flatten(x)
 
