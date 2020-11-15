@@ -5,6 +5,7 @@ import torch
 
 
 def test_model(model, test_loader, device):
+    model.eval()
     correct = 0
     total = 0
     ce_loss = 0
@@ -34,6 +35,7 @@ def train_model(model, train_loader, val_loader, num_epochs, lr,
 
     val_acc = []
     for i in range(num_epochs):
+        model.train()
 
         if log:
             print("Epoch {}".format(i))
