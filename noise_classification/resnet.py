@@ -67,3 +67,33 @@ class SmallResNet(nn.Module):
 
         out = self.fc(out)
         return out
+
+
+class VerySmallResNet(nn.Module):
+    def __init__(self, num_classes):
+        super(VerySmallResNet, self).__init__()
+        self.conv = nn.Conv2d(1, 64, (7, 7), stride=2, padding=3)
+        self.bn = nn.BatchNorm2d(64)
+        self.relu = nn.ReLU()
+        self.pool = nn.MaxPool2d((2, 2))
+
+        self.block = ResNetBlock(64, 128)
+
+        self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
+        self.flatten = nn.Flatten()
+
+        self.fc = nn.Linear(128, num_classes)
+
+    def forward(self, x):
+        out = self.conv(x)
+        out = self.bn(out)
+        out = self.relu(out)
+        out = self.pool(out)
+
+        out = self.block(out)
+
+        out = self.avg_pool(out)
+        out = self.flatten(out)
+
+        out = self.fc(out)
+        return out
