@@ -78,7 +78,8 @@ class ResNetEncoder(nn.Module):
         self.relu = nn.ReLU()
         self.pool = nn.MaxPool2d((2, 2))
 
-        self.block = ResNetBlock(64, 128)
+        self.block1 = ResNetBlock(64, 128)
+        self.block2 = ResNetBlock(128, 256)
 
     def forward(self, x):
         out = self.conv(x)
@@ -86,7 +87,8 @@ class ResNetEncoder(nn.Module):
         out = self.relu(out)
         out = self.pool(out)
 
-        out = self.block(out)
+        out = self.block1(out)
+        out = self.block2(out)
 
         return out
 
@@ -94,7 +96,8 @@ class ResNetEncoder(nn.Module):
 class ResNetDecoder(nn.Module):
     def __init__(self):
         super(ResNetDecoder, self).__init__()
-        self.upblock = DeconvResnetBlock(128, 64)
+        self.upblock1 = DeconvResnetBlock(256, 128)
+        self.upblock2 = DeconvResnetBlock(128, 64)
 
         self.upsample1 = nn.ConvTranspose2d(64, 32, (3, 3), stride=2, padding=1, output_padding=1)
         self.bn1 = nn.BatchNorm2d(32)
@@ -107,7 +110,8 @@ class ResNetDecoder(nn.Module):
         self.last_conv = nn.Conv2d(16, 1, (1, 1))
 
     def forward(self, x):
-        out = self.upblock(x)
+        out = self.upblock1(x)
+        out = self.upblock2(out)
 
         out = self.upsample1(out)
         out = self.bn1(out)
