@@ -57,9 +57,9 @@ def train_model(model, train_loader, val_loader, num_epochs, lr,
             optimizer.step()
             running_loss += loss.item()
 
-        mse_loss, acc = test_model(model, val_loader, device)
+        mse_loss = test_model(model, val_loader, device)
 
-        val_mse.append(val_mse)
+        val_mse.append(mse_loss)
 
         if log:
             print("Train MSE: {:.3f}".format(running_loss / len(train_loader)))
