@@ -52,7 +52,9 @@ def train_model(model, train_loader, val_loader, num_epochs, lr,
 
             answers = model(imgs_noisy)
 
-            loss = calc_batch_mse(answers, imgs_clean, lens).item()
+            loss = calc_batch_mse(answers, imgs_clean, lens)
+            loss.backward()
+            optimizer.step()
             running_loss += loss.item()
 
         mse_loss, acc = test_model(model, val_loader, device)

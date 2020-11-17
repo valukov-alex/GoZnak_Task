@@ -28,6 +28,7 @@ class ResNetBlock(nn.Module):
         out = self.bn2(out)
 
         identity = self.downsample(identity)
+
         out += identity
 
         out = self.relu2(out)
@@ -49,7 +50,7 @@ class DeconvResnetBlock(nn.Module):
         self.relu2 = nn.ReLU()
 
         self.upsample = nn.ConvTranspose2d(in_channels, out_channels, kernel_size=(1, 1),
-                                           stride=2, padding=1, output_padding=1)
+                                           stride=2, output_padding=1)
 
     def forward(self, x):
         identity = x
@@ -69,18 +70,15 @@ class DeconvResnetBlock(nn.Module):
         return out
 
 
-class AutoEncoderResNet(nn.Module):
+class ResNetEncoder(nn.Module):
     def __init__(self):
-        super(AutoEncoderResNet, self).__init__()
+        super(ResNetEncoder, self).__init__()
         self.conv = nn.Conv2d(1, 64, (7, 7), stride=2, padding=3)
         self.bn = nn.BatchNorm2d(64)
         self.relu = nn.ReLU()
         self.pool = nn.MaxPool2d((2, 2))
 
         self.block = ResNetBlock(64, 128)
-        self.upblock = DeconvResnetBlock(128, 64)
-
-        self.last_conv = nn.Conv2d(64, 1, (1, 1))
 
     def forward(self, x):
         out = self.conv(x)
@@ -89,7 +87,48 @@ class AutoEncoderResNet(nn.Module):
         out = self.pool(out)
 
         out = self.block(out)
-        out = self.upblock(out)
+
+        return out
+
+
+class ResNetDecoder(nn.Module):
+    def __init__(self):
+        super(ResNetDecoder, self).__init__()
+        self.upblock = DeconvResnetBlock(128, 64)
+
+        self.upsample1 = nn.ConvTranspose2d(64, 32, (3, 3), stride=2, padding=1, output_padding=1)
+        self.bn1 = nn.BatchNorm2d(32)
+        self.relu1 = nn.ReLU()
+
+        self.upsample2 = nn.ConvTranspose2d(32, 16, (3, 3), stride=2, padding=1, output_padding=1)
+        self.bn2 = nn.BatchNorm2d(16)
+        self.relu2 = nn.ReLU()
+
+        self.last_conv = nn.Conv2d(16, 1, (1, 1))
+
+    def forward(self, x):
+        out = self.upblock(x)
+
+        out = self.upsample1(out)
+        out = self.bn1(out)
+        out = self.relu1(out)
+
+        out = self.upsample2(out)
+        out = self.bn2(out)
+        out = self.relu2(out)
 
         out = self.last_conv(out)
+
+        return out
+
+
+class ResNetAutoEncoder(nn.Module):
+    def __init__(self):
+        super(ResNetAutoEncoder, self).__init__()
+        self.encoder = ResNetEncoder()
+        self.decoder = ResNetDecoder()
+
+    def forward(self, x):
+        out = self.encoder(x)
+        out = self.decoder(out)
         return out

@@ -1,6 +1,6 @@
 import torch
 from torch.utils.data import DataLoader
-from model import AutoEncoderResNet
+from model import ResNetAutoEncoder
 from train_utils import train_model
 from dataset import DenoisingDataset
 import argparse
@@ -31,7 +31,7 @@ def main():
     val_loader = DataLoader(val_dataset, batch_size=args.batch_size,
                             shuffle=False)
 
-    model = AutoEncoderResNet().to(device)
+    model = ResNetAutoEncoder().to(device)
     train_model(model, train_loader, val_loader, args.epochs,
                 args.learning_rate, device, log=True)
 
