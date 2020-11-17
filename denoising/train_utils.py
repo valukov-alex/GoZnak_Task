@@ -4,8 +4,7 @@ import torch
 
 def calc_batch_mse(noisy_images, clean_images, lens):
     h, w = noisy_images.size()[2:4]
-    masks = (torch.arange(h)[None, :] < lens[:, None]).unsqueeze(-1).unsqueeze(1)
-    masks = masks.to(noisy_images.device)
+    masks = (torch.arange(h)[None, :].to(lens.device) < lens[:, None]).unsqueeze(-1).unsqueeze(1)
     mse_batch = torch.sum(((noisy_images - clean_images) * masks) ** 2)
     mse_batch /= w * lens.sum()
     return mse_batch
