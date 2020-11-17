@@ -62,7 +62,7 @@ def train_model(model, train_loader, val_loader, num_epochs, lr,
         val_mse.append(mse_loss)
 
         if log:
-            print("Train MSE: {:.3f}".format(running_loss / len(train_loader)))
-            print("Validation MSE: {:.3f}".format(mse_loss))
+            print("Train MSE: {:.4f}".format(running_loss / len(train_loader)))
+            print("Validation MSE: {:.4f}".format(mse_loss))
 
     return val_mse
