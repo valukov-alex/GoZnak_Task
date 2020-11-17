@@ -4,7 +4,7 @@ from torch.utils.data import Dataset
 import numpy as np
 
 
-def pad_mel_spectogram(mel_spectogram, length = 1400):
+def pad_mel_spectogram(mel_spectogram, length = 1536):
     h, w = mel_spectogram.shape
     mel_spctr_new = np.zeros((length, w))
     mel_spctr_new[:h] = mel_spectogram
