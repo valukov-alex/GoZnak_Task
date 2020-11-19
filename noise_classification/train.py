@@ -4,6 +4,7 @@ from model import SmallResNet
 from train_utils import train_model
 from dataset import NoiseClassificationDataset
 import argparse
+import os
 
 
 def parse_args():
