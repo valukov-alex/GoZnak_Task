@@ -39,7 +39,7 @@ def main():
     model_dir = os.path.dirname(args.model_save_path)
     if not os.path.exists(model_dir) and model_dir:
         os.mkdir(model_dir)
-    torch.save(model, args.model_save_path, _use_new_zipfile_serialization=False)
+    torch.save(model.state_dict(), args.model_save_path, _use_new_zipfile_serialization=False)
 
 
 if __name__ == "__main__":
