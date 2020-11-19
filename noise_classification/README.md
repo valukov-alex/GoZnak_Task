@@ -4,8 +4,8 @@
 ```
 python3 train.py train_dir val_dir
 ```
-Так же есть опциональные аргументы:  
-В папках train_dir и al_dir должны лежать папки clean и noisy  
+В папках train_dir и val_dir должны лежать папки clean и noisy  
+Так же есть опциональные аргументы:   
 -m save_model_path - путь для сохранения модели, по умолчанию - ./models/model.pt  
 -e epochs - кол-во эпох, по умолчанию 20  
 -l learning_rate, по умолчанию 1e-5  
