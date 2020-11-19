@@ -14,7 +14,7 @@ python3 train.py train_dir val_dir
 python3 run.py path_to_file
 ```
 Опциональный аргумент:  
--m model_path - путь к модели  
+-m model_path - путь к модели, по умолчанию - ./models/model.pt  
 Программа выводит в stdout  
 0 - если шума нет  
 1 - если шум есть
