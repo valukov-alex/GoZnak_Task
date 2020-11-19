@@ -37,7 +37,7 @@ class ResNetBlock(nn.Module):
 
 class SmallResNet(nn.Module):
     def __init__(self, num_classes):
-        super(VerySmallResNet, self).__init__()
+        super(SmallResNet, self).__init__()
         self.conv = nn.Conv2d(1, 64, (7, 7), stride=2, padding=3)
         self.bn = nn.BatchNorm2d(64)
         self.relu = nn.ReLU()
