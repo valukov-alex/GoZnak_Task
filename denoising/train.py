@@ -1,8 +1,9 @@
 import torch
 from torch.utils.data import DataLoader
-from model import ResNetAutoEncoder
+from model import CRNN
 from train_utils import train_model
 from dataset import DenoisingDataset
+import os
 import argparse
 
 
@@ -10,10 +11,10 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("train_dir", type=str)
     parser.add_argument("val_dir", type=str)
-    parser.add_argument("model_save_dir", type=str)
-    parser.add_argument("-b", dest="batch_size", default=64, type=int)
-    parser.add_argument("-l", dest="learning_rate", default=1e-4, type=float)
-    parser.add_argument("-e", dest="epochs", default=20, type=int)
+    parser.add_argument("-m", dest="model_save_path", default="./models/model.pt", type=str)
+    parser.add_argument("-b", dest="batch_size", default=16, type=int)
+    parser.add_argument("-l", dest="learning_rate", default=1e-5, type=float)
+    parser.add_argument("-e", dest="epochs", default=100, type=int)
     args = parser.parse_args()
     return args
 
@@ -31,11 +32,14 @@ def main():
     val_loader = DataLoader(val_dataset, batch_size=args.batch_size,
                             shuffle=False)
 
-    model = ResNetAutoEncoder().to(device)
+    model = CRNN().to(device)
     train_model(model, train_loader, val_loader, args.epochs,
                 args.learning_rate, device, log=True)
 
-    torch.save(model, args.model_save_dir)
+    model_dir = os.path.dirname(args.model_save_path)
+    if not os.path.exists(model_dir) and model_dir:
+        os.mkdir(model_dir)
+    torch.save(model.state_dict(), args.model_save_path, _use_new_zipfile_serialization=False)
 
 
 if __name__ == "__main__":
