@@ -14,5 +14,5 @@ python3 train.py train_dir val_dir
 python3 run.py path_to_file path_to_save
 ```
 Опциональный аргумент:  
--m model_path - путь к модели  
+-m model_path - путь к модели, по умолчанию ./models/model.pt  
 Скрипт берет пектрограмму из path_to_file и сохраняет результат в path_to_save
