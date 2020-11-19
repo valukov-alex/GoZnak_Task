@@ -13,7 +13,7 @@ def parse_args():
     parser.add_argument("val_dir", type=str)
     parser.add_argument("-m", dest="model_save_path", default="./models/model.pt", type=str)
     parser.add_argument("-b", dest="batch_size", default=64, type=int)
-    parser.add_argument("-l", dest="learning_rate", default=1e-4, type=float)
+    parser.add_argument("-l", dest="learning_rate", default=1e-5, type=float)
     parser.add_argument("-e", dest="epochs", default=20, type=int)
     args = parser.parse_args()
     return args
